@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact Card - Combined Editable</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:#0B5CFF;color:#09142c}
+.page{min-height:100vh;background:#0B5CFF;padding:32px 16px 56px;display:flex;justify-content:center}
+.main-combined-card{width:100%;max-width:680px;background:#fff;border-radius:36px;box-shadow:0 28px 90px rgba(0,24,96,.38);border:1px solid rgba(255,255,255,.7);padding:32px;display:flex;flex-direction:column;gap:28px}
+[contenteditable="true"]:focus{outline:2px solid rgba(11,92,255,.25);outline-offset:2px;border-radius:6px;background:rgba(11,92,255,.06)}
+.profile-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:8px}
+.ring-outer{border-radius:999px;padding:4px;background:#fff;box-shadow:0 0 0 2px #0B5CFF,0 16px 40px rgba(11,92,255,.18)}
+.profile-circle{position:relative;width:160px;height:160px;border-radius:999px;overflow:hidden;background:#F6F8FF;border:1px solid rgba(11,92,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset 0 2px 14px rgba(9,20,44,.08)}
+.profile-circle img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo-ph{width:56px;height:56px;border-radius:999px;background:#fff;border:1px solid rgba(11,92,255,.1);box-shadow:0 8px 22px rgba(11,92,255,.14);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;letter-spacing:.18em;color:#0B5CFF}
+.cam-btn{position:absolute;right:-6px;bottom:-4px;width:38px;height:38px;border-radius:999px;background:#09142c;color:#fff;border:3px solid #fff;box-shadow:0 10px 24px rgba(9,20,44,.24);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.divider{height:1px;width:100%;background:rgba(9,20,44,.08)}
+.contact-grid{display:grid;grid-template-columns:1fr 190px;gap:24px;align-items:center}
+.contact-info h1{margin:0 0 6px;font-size:32px;line-height:1.05;letter-spacing:-.03em;font-weight:800}
+.role{margin:0 0 18px;font-size:15px;color:rgba(9,20,44,.58);font-weight:500}
+.contact-list{display:flex;flex-direction:column;gap:10px}
+.contact-row{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500}
+.icon{width:18px;height:18px;color:#0B5CFF;flex:0 0 auto}
+.qr-panel{width:190px;border-radius:20px;border:1px solid rgba(11,92,255,.16);background:rgba(11,92,255,.08);padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.qr-code{width:150px;height:150px;border-radius:16px;background:#fff;border:1px solid rgba(9,20,44,.08);position:relative;overflow:hidden}
+.finder{position:absolute;width:34px;height:34px;background:#09142c;border-radius:4px}
+.finder::before{content:"";position:absolute;inset:8px;background:#fff;border-radius:3px}
+.finder::after{content:"";position:absolute;width:8px;height:8px;left:13px;top:13px;background:#09142c;border-radius:2px;z-index:2}
+.f1{left:14px;top:14px}.f2{right:14px;top:14px}.f3{left:14px;bottom:14px}
+.dot{position:absolute;width:8px;height:8px;background:#09142c;border-radius:2px}.dot.blue{background:#0B5CFF}.dot.wide{width:16px}.dot.wider{width:22px}
+.qr-caption{margin:0;font-size:11px;font-weight:700;letter-spacing:.06em;color:#0B5CFF;text-transform:uppercase}
+.payment-header{display:flex;align-items:center;gap:14px}
+.payment-icon-circle{width:48px;height:48px;border-radius:999px;border:1px solid rgba(11,92,255,.16);background:rgba(11,92,255,.10);display:flex;align-items:center;justify-content:center;color:#0B5CFF;flex:0 0 auto}
+.payment-header h2{margin:0 0 4px;font-size:22px;line-height:1.1;letter-spacing:-.025em;font-weight:800}
+.payment-header p{margin:0;font-size:13.5px;line-height:1.45;color:rgba(9,20,44,.58)}
+.payment-list{display:flex;flex-direction:column;gap:10px}
+.payment-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:18px;border:1px solid rgba(11,92,255,.08);background:rgba(11,92,255,.05)}
+.payment-row svg{width:20px;height:20px;color:#0B5CFF;flex:0 0 auto}
+.payment-note{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:14px;border:1px solid rgba(9,20,44,.08);background:rgba(9,20,44,.04);font-size:13px;line-height:1.45;font-weight:500;color:rgba(9,20,44,.64)}
+@media(max-width:720px){.contact-grid{grid-template-columns:1fr}.qr-panel{width:100%}.main-combined-card{padding:22px;border-radius:28px}}
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="main-combined-card">
+    <!-- 1. PROFILE PHOTO SLOT - smaller centered portrait -->
+    <section class="profile-wrap">
+      <div style="position:relative">
+        <div class="ring-outer">
+          <div class="profile-circle" id="profileCircle" title="Click to upload photo">
+            <div class="photo-ph" id="photoPh">PHOTO</div>
+            <img id="profileImg" style="display:none" alt="Profile"/>
+          </div>
+        </div>
+        <button class="cam-btn" id="camBtn" aria-label="Upload photo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+        </button>
+        <input type="file" id="fileInput" accept="image/*" hidden>
+      </div>
+      <div style="text-align:center;display:flex;flex-direction:column;gap:2px">
+        <h2 contenteditable="true" style="margin:0;font-size:15px;font-weight:600">Drop photo here</h2>
+        <p contenteditable="true" style="margin:0;font-size:13px;color:rgba(9,20,44,.55);font-weight:500">Replace the fill with your image</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 2. CONTACT INFO -->
+    <section>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h1 contenteditable="true">abet betaa</h1>
+          <p class="role" contenteditable="true">Contact information</p>
+          <div class="contact-list">
+            <div class="contact-row">
+              <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>
+              <span contenteditable="true">hello@example.com</span>
+            </div>
+            <div class="contact-row">
+              <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12.9.32 1.78.6 2.63a2 2 0 0 1-.45 2.11L9 10.6a16 16 0 0 0 4.4 4.4l1.14-1.14a2 2 0 0 1 2.11-.45c.85.28 1.73.48 2.63.6A2 2 0 0 1 22 16.92z"/></svg>
+              <span contenteditable="true">+65 0000 0000</span>
+            </div>
+            <div class="contact-row">
+              <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 0 20"/><path d="M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+              <span contenteditable="true">example.com</span>
+            </div>
+          </div>
+        </div>
+        <div class="qr-panel">
+          <div class="qr-code">
+            <div class="finder f1"></div><div class="finder f2"></div><div class="finder f3"></div>
+            <span class="dot" style="left:60px;top:18px"></span><span class="dot blue" style="left:74px;top:18px"></span><span class="dot" style="left:88px;top:18px"></span>
+            <span class="dot" style="left:60px;top:34px"></span><span class="dot" style="left:88px;top:34px"></span>
+            <span class="dot blue" style="left:54px;top:60px"></span><span class="dot" style="left:70px;top:60px"></span><span class="dot" style="left:86px;top:60px"></span><span class="dot blue" style="left:102px;top:60px"></span><span class="dot" style="left:118px;top:60px"></span>
+            <span class="dot" style="left:60px;top:76px"></span><span class="dot wide" style="left:78px;top:78px"></span><span class="dot" style="left:112px;top:78px"></span>
+            <span class="dot" style="left:58px;top:98px"></span><span class="dot blue" style="left:76px;top:98px"></span><span class="dot" style="left:96px;top:96px"></span><span class="dot wider" style="left:112px;top:96px"></span>
+            <span class="dot wide" style="left:58px;top:116px"></span><span class="dot" style="left:86px;top:116px"></span><span class="dot blue" style="left:102px;top:116px"></span><span class="dot" style="left:124px;top:116px"></span>
+          </div>
+          <p class="qr-caption">Scan to save contact</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 3. PAYMENT METHODS -->
+    <section style="display:flex;flex-direction:column;gap:18px">
+      <div class="payment-header">
+        <div class="payment-icon-circle"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+        <div><h2 contenteditable="true">Payment methods</h2><p contenteditable="true">Edit these details with your preferred payment accounts.</p></div>
+      </div>
+      <div class="payment-list">
+        <div class="payment-row"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V10"/><path d="M19 21V10"/><path d="M9 21V10"/><path d="M15 21V10"/><path d="M12 3 3 8h18z"/></svg><div><strong contenteditable="true">Bank transfer</strong><span contenteditable="true">Bank name · Account number</span></div></div>
+        <div class="payment-row"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3v4a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5"/><path d="M18 12h.01"/></svg><div><strong contenteditable="true">E-wallet</strong><span contenteditable="true">GCash / PayMaya · 09XX XXX XXXX</span></div></div>
+        <div class="payment-row"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="16" width="5" height="5"/><path d="M16 16h.01"/><path d="M21 16h.01"/><path d="M16 21h.01"/><path d="M21 21h.01"/></svg><div><strong contenteditable="true">Payment QR</strong><span contenteditable="true">Replace this row with your QR image or payment link</span></div></div>
+      </div>
+      <div class="payment-note"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex:0 0 auto"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg><span contenteditable="true">Note: Please send proof of payment after transfer.</span></div>
+    </section>
+  </div>
+</main>
+<script>
+const fileInput=document.getElementById('fileInput');
+const profileImg=document.getElementById('profileImg');
+const photoPh=document.getElementById('photoPh');
+const circle=document.getElementById('profileCircle');
+const camBtn=document.getElementById('camBtn');
+function openPicker(){fileInput.click();}
+circle.addEventListener('click',openPicker);
+camBtn.addEventListener('click',openPicker);
+fileInput.addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const url=URL.createObjectURL(f);
+  profileImg.src=url; profileImg.style.display='block'; photoPh.style.display='none';
+});
+</script>
+</body>
+</html>
